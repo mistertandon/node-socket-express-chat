@@ -26,7 +26,11 @@ SOCKET_IO.sockets.on('connection', function (socket) {
 
 	socket.on('send_message', function (data) {
 
-		SOCKET_IO.sockets.emit('new_message', data);
+		SOCKET_IO.sockets.emit('new_message', {
+
+			"userName": socket.username,
+			"message": data
+		});
 	});
 
 	socket.on('is_valid_username', function (data, callBack) {
@@ -38,11 +42,21 @@ SOCKET_IO.sockets.on('connection', function (socket) {
 
 			callBack(true);
 
+			SOCKET_IO.sockets.emit('new_user', userNamesArr);
+
 		} else {
 
 			callBack(false);
 		}
 	});
 
+	socket.on('disconnect', function () {
+
+		if (!socket.username) return;
+
+		userNamesArr.splice(userNamesArr.indexOf(socket.username), 1);
+		SOCKET_IO.sockets.emit('new_user', userNamesArr);
+
+	});
 
 });

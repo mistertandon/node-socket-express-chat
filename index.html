@@ -17,7 +17,7 @@
 						<label for="username">Username : </label>
 						<input name="username" type="text" id="username" class="form-control">
 
-						<div id="invalid-username-message-display">
+						<div id="invalid-username-message-display" class="display-none-class">
 							<span class="text-danger">Username is already taken</span>
 						</div>
 
@@ -49,8 +49,10 @@
 				</div>
 			</div>
 			<div class="col-sm-4 col-sm-offset-1">
-				<div id="live-users-cont" class="col-sm-12 live-users">
-					live users
+				<div class="col-sm-12 live-users">
+					<ul id="live-users-cont-ul" class="list-group">
+
+					</ul>
 				</div>
 			</div>
 
@@ -79,15 +81,15 @@
 		sendMessage.on('click', function (event) {
 
 			event.preventDefault();
-			event.stopPropagation();
-			event.stopImmediatePropagation();
+			event.isPropagationStopped();
+			event.isImmediatePropagationStopped();
 
 			socket.emit('send_message', message.val());
 			message.val('');
 
 			socket.on('new_message', function (data) {
 
-				displayRecentChat.append('<br>' + data);
+				displayRecentChat.append('<br>' + data.userName + " : " + data.message);
 			});
 
 		});
@@ -101,8 +103,8 @@
 		usernameBtn.on('click', function (event) {
 
 			event.preventDefault();
-			event.stopPropagation();
-			event.stopImmediatePropagation();
+			event.isPropagationStopped();
+			event.isImmediatePropagationStopped();
 
 			socket.emit('is_valid_username', userName.val(), function (data) {
 
@@ -130,7 +132,16 @@
 
 			});
 
-			socket.on('is_valid_username');
+			socket.on('new_user', function (liveUsers) {
+
+				jQuery("ul#live-users-cont-ul").html('');
+
+				liveUsers.map(function (elementVal, index) {
+
+					jQuery("ul#live-users-cont-ul").append("<li class=\"list-group-item\">" + elementVal + "</li>");
+				});
+
+			});
 
 		});
 
