@@ -1,0 +1,27 @@
+#live-users-wrapper, #chat-wrapper, #chat-username-wrapper{
+
+	border: 1px groove #4169e1;
+}
+
+.display-recent-chat{
+
+	min-height:200px;
+	
+	margin-top:20px;
+}
+
+#invalid-username-message-display{
+
+	display:block;
+}
+
+.display-class{
+
+	display:block;
+}
+
+.display-none-class{
+
+	display:none;
+}
+
