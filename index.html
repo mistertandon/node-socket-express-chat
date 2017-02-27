@@ -136,7 +136,7 @@
 
 				jQuery("ul#live-users-cont-ul").html('');
 
-				liveUsers.map(function (elementVal, index) {
+				Object.keys(liveUsers).map(function (elementVal, index) {
 
 					jQuery("ul#live-users-cont-ul").append("<li class=\"list-group-item\">" + elementVal + "</li>");
 				});

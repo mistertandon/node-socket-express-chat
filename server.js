@@ -5,7 +5,7 @@ var _ = require('lodash');
 var app = EXPRESS();
 var httpServer = HTTP.createServer(app);
 var SOCKET_IO = require('socket.io').listen(httpServer);
-var userNamesArr = ['parvesh'];
+var userNamesArr = {};
 
 
 httpServer.listen(3070);
@@ -35,18 +35,17 @@ SOCKET_IO.sockets.on('connection', function (socket) {
 
 	socket.on('is_valid_username', function (data, callBack) {
 
-		if (userNamesArr.indexOf(data) === -1) {
+		if (data in userNamesArr) {
+
+			callBack(false);
+		} else {
 
 			socket.username = data;
-			userNamesArr.push(data);
+			userNamesArr.data = 1;
 
 			callBack(true);
 
 			SOCKET_IO.sockets.emit('new_user', userNamesArr);
-
-		} else {
-
-			callBack(false);
 		}
 	});
 
@@ -54,7 +53,7 @@ SOCKET_IO.sockets.on('connection', function (socket) {
 
 		if (!socket.username) return;
 
-		userNamesArr.splice(userNamesArr.indexOf(socket.username), 1);
+		delete userNamesArr.socket.username;
 		SOCKET_IO.sockets.emit('new_user', userNamesArr);
 
 	});
