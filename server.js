@@ -5,7 +5,7 @@ var _ = require('lodash');
 var app = EXPRESS();
 var httpServer = HTTP.createServer(app);
 var SOCKET_IO = require('socket.io').listen(httpServer);
-var userNamesArr = {};
+var userNamesObj = {};
 
 
 httpServer.listen(3070);
@@ -35,17 +35,17 @@ SOCKET_IO.sockets.on('connection', function (socket) {
 
 	socket.on('is_valid_username', function (data, callBack) {
 
-		if (data in userNamesArr) {
+		if (data in userNamesObj) {
 
 			callBack(false);
 		} else {
 
 			socket.username = data;
-			userNamesArr.data = 1;
+			userNamesObj.data = 1;
 
 			callBack(true);
 
-			SOCKET_IO.sockets.emit('new_user', userNamesArr);
+			SOCKET_IO.sockets.emit('new_user', userNamesObj);
 		}
 	});
 
@@ -53,8 +53,8 @@ SOCKET_IO.sockets.on('connection', function (socket) {
 
 		if (!socket.username) return;
 
-		delete userNamesArr.socket.username;
-		SOCKET_IO.sockets.emit('new_user', userNamesArr);
+		delete userNamesObj.socket.username;
+		SOCKET_IO.sockets.emit('new_user', userNamesObj);
 
 	});
 
