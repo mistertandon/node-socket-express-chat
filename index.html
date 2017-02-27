@@ -89,7 +89,7 @@
 
 			socket.on('new_message', function (data) {
 
-				displayRecentChat.append('<br>' + data.userName + " : " + data.message);
+				displayRecentChat.append('<br><b>' + data.userName + " : </b>" + data.message);
 			});
 
 		});
