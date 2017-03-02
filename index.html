@@ -84,7 +84,11 @@
 			event.isPropagationStopped();
 			event.isImmediatePropagationStopped();
 
-			socket.emit('send_message', message.val());
+			socket.emit('send_message', message.val(), function (isValidMessage, returnedMessage) {
+
+				console.log(returnedMessage);
+			});
+
 			message.val('');
 
 			socket.on('new_message', function (data) {
@@ -141,6 +145,11 @@
 					jQuery("ul#live-users-cont-ul").append("<li class=\"list-group-item\">" + elementVal + "</li>");
 				});
 
+			});
+
+			socket.on('private_messaging', function (messageObj) {
+
+				displayRecentChat.append('<br><b>' + messageObj.targetUserName + " : </b>" + messageObj.message);
 			});
 
 		});
